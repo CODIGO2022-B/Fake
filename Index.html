@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yape Login</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="help" aria-label="Ayuda">
+        <img src="at.png" alt="Icono de ayuda">
+        <span>Ayuda</span>
+    </div>
+    <div class="container">
+        <div class="qr-container">
+            <img src="yape.jpg" alt="Código QR para la aplicación Yape">
+        </div>
+        <div class="input-container">
+            <div class="input-content">
+                <p id="instruction">Ingresa tu clave</p>
+                <div class="dots-container" id="dotsContainer">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+            </div>
+            <div class="keypad">
+                <button aria-label="7" data-value="7">7</button>
+                <button aria-label="8" data-value="8">8</button>
+                <button aria-label="9" data-value="9">9</button>
+                <button aria-label="4" data-value="4">4</button>
+                <button aria-label="5" data-value="5">5</button>
+                <button aria-label="6" data-value="6">6</button>
+                <button aria-label="1" data-value="1">1</button>
+                <button aria-label="2" data-value="2">2</button>
+                <button aria-label="3" data-value="3">3</button>
+                <button class="fingerprint" aria-label="Huella digital">
+                    <img src="fingerprint-icon.png" alt="Icono de huella digital">
+                </button>
+                <button aria-label="0" data-value="0">0</button>
+                <button aria-label="Eliminar" data-value="delete">X</button>
+            </div>
+            <div class="forgot-password">
+                ¿OLVIDASTE TU CLAVE?
+            </div>
+        </div>
+    </div>
+    <script>
+        const buttons = document.querySelectorAll('.keypad button');
+        const dots = document.querySelectorAll('.dots-container .dot');
+        const instruction = document.getElementById('instruction');
+        const dotsContainer = document.getElementById('dotsContainer');
+        let currentIndex = 0;
+
+        buttons.forEach(button => {
+            button.addEventListener('click', () => {
+                const value = button.getAttribute('data-value');
+
+                if (currentIndex === 0) {
+                    instruction.style.opacity = '0'; // Ocultar el texto con desvanecimiento
+                    setTimeout(() => {
+                        instruction.style.display = 'none'; // Ocultar el texto completamente
+                        dotsContainer.style.opacity = '1'; // Mostrar los puntos con transición
+                    }, 300); // Sincronizar con la transición de opacidad
+                }
+
+                if (value === 'delete') {
+                    if (currentIndex > 0) {
+                        currentIndex--;
+                        dots[currentIndex].classList.remove('active');
+                    }
+
+                    if (currentIndex === 0) {
+                        // Volver a mostrar la palabra cuando todos los números se hayan borrado
+                        instruction.style.display = 'block';
+                        instruction.style.opacity = '1'; // Hacer visible el texto
+                        dotsContainer.style.opacity = '0'; // Ocultar los puntos con transición
+                    }
+                } else {
+                    if (currentIndex < dots.length) {
+                        dots[currentIndex].classList.add('active');
+                        currentIndex++;
+                    }
+                }
+
+                // Aquí podrías redirigir al usuario o mostrar otro contenido cuando todos los puntos estén activos
+                if (currentIndex >= 6) {
+                    // Acción cuando se hayan ingresado los 6 dígitos
+                }
+            });
+        });
+    </script>
+</body>
+</html>
